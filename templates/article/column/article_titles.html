@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load article_tags %}
+{% block title %}article titles{% endblock %}
+
+{% block content %}
+<div class="row text-center vertical-middle-sm">
+    <h1>学习一时爽，一直学习一直爽</h1>
+    {% if userinfo %}
+        <p>作者共有{% author_total_articles user %}篇文章</p>
+    {% else %}
+        <p>这里有{% total_articles %}篇文章</p>
+    {% endif %}
+    
+</div>
+<div class="container"> 
+    {% if userinfo %}
+    <div class="col-md-8">
+    {% endif %}
+    {% for article in articles %}
+        <div class="list-group">
+            <a href="{{ article.get_url_path }}" class="list-group-item">
+            <h4 class="list-group-item-heading active" >{{ article.title }}</h4>
+            <hr>
+            <p class="list-group-item-text">作者：
+                    {{ article.author.username }}
+            </p>
+            <p class="list-group-item-text">日期：{{ article.created }}</p>
+            <p class="list-group-item-text">栏目：{{ article.column }}</p>
+            <p class="list-group-item-text">概要：{{ article.body|slice:'70'|linebreaks }}</p>
+            </a>
+        </div>
+    {% endfor %}
+    {% include "paginator.html" %}
+    {% if userinfo %}
+    </div>
+    {% endif %}
+    
+    {% if userinfo %}
+    <div class="col-md-4">
+        <div>
+            {% if userinfo.photo %}
+            <!-- <img src="{% static '/images/me.jpg' %}" class="img-circle" id="my_photo" name="user_face"-->
+           <img src="{{ userinfo.photo | striptags }}" class="img-circle" id="my_photo" name="user_face">
+            {% else %}
+            <img src="{% static '/images/me.jpg' %}" class="img-circle" id="my_photo" name="user_face">
+            {% endif %}
+     
+        </div>
+        <div class="" style="margin-top:20px">
+            <p>username: {{ user.username }}</p>
+            {% if userinfo %}
+                <p>company: {{ userinfo.company }}</p>
+                <p>aboutme:{{ userinfo.aboutme|slice:'30'|linebreaks }}...</p>
+            {% else %}
+                <p>这个作者太懒，什么都没剩下。。。</p>
+            {% endif %}
+     
+        </div>
+    </div>
+    {% endif %}
+    
+</div>
+
+
+<script type="text/javascript" src="{% static '/js/jquery.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'article/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}article list{% endblock %}
+
+{% block content %}
+<div>
+    <!--<p class="text-right"><button class="btn btn-primary" id="add_column" onclick="add_column()" data-toggle="tooltip" data-placement="bottom" title="不能以“_”、空格或数字开头,区分大小写,名字中可包含'_',大小写字母，数字">add column</button></p>-->
+    <table class="table table-hover">
+        <tr>
+            <td>序号</td>
+            <td>标题</td>
+            <td>栏目</td>
+            <td>发布时间</td>
+            <td>操作</td>  
+        </tr>
+        {% for article in articles %}
+        <tr id={{ article.id }}>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></td>
+            <td>{{ article.column }}</td>
+            <td>{{ article.created }}</td>
+            <td>
+                <a name="redit" href="{% url 'article:redit_article' article.id  %}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <a name="delete" href="javascript:" onclick="delete_article(this, {{ article.id }})">
+                    <span class="glyphicon glyphicon-trash" style="margin-left:20px"></span>
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <p>还没有发布一篇文章，太懒了。</p>
+        {% endfor %}
+    </table>
+    {% include "paginator.html" %}
+</div>
+
+
+<script type="text/javascript" src="{% static '/js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/layer.js' %}"></script>
+
+<script type="text/javascript">
+    function delete_article(the, article_id){
+        var article_name = $(the).parents("tr").children("td").eq(1).text();
+        layer.open({
+            type: 1,
+            skin: "layui-layer-rim",
+            area: ["400px", "200px"],
+            title: "删除文章",
+            content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除《'+article_name+'》</p></div>',
+            btn: ['确定','取消'],
+            yes: function(){
+                $.ajax({
+                    url: '{% url "article:delete_article" %}',
+                    type: 'POST',
+                    data: {"article_id": article_id},
+                    success: function(e){
+                        if (e == '1'){
+                            parent.location.reload();
+                            layer.msg("删除成功");
+                        } else {
+                            parent.location.reload();
+                            layer.msg("文章删除失败")
+                        }
+                    },
+                });
+            },
+            btn2: function(index, layero){
+                layer.close(index);
+            },
+        });
+    };
+</script> 
+{% endblock %}

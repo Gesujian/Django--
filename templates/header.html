@@ -1,0 +1,64 @@
+{% load staticfiles %}
+
+<div class="container">
+    <nav class="navbar navbar-default" role="navgation">
+        <div class="navbar-header">
+		<a class="navbar-brand" href="{% url 'blog:blog_title' %}">
+			<img src="{% static '/images/logo2.jpg' %}" width="100px" height="30px">
+		</a>
+        </div>
+	<div>
+		<ul class="nav navbar-nav" role="navgation">
+		    <li class=""><a href="{% url 'home' %}">HOME</a></li>
+			<li class=""><a href="{% url 'blog:blog_title' %}">BLOG</a></li>
+			<li class=""><a href="{% url 'article:article_titles' %}">Articles</a></li>
+		</ul>
+
+		<ul class="nav navbar-nav navbar-right" style="margin-right:20px">
+			{% if user.is_authenticated %}
+			<li>
+			<div class="dropdown" style="margin-top:8px">
+			    <button class="btn btn-default dropdown-toggle" 
+			        type="button" id="dropdownMenu" data-toggle="dropdown">
+			        {{ user.username }}
+			        <span class="caret"></span>
+			    </button>
+			    
+			    <ul class="dropdown-menu">
+			    <li><a href="{% url 'account:password_change' %}">Change password</a></li>
+			    <li><a href="{% url 'account:password_reset' %}">Reset password</a></li>
+			    <li><a href="{% url 'account:my_information' %}">Profile</a></li>
+			    <li><a href="{% url 'account:edit_my_information' %}">Edit Profile</a></li>
+			    <li><a href="{% url 'article:article_column' %}">后台管理</a></li>
+			    </ul>
+			</div>
+			</li>
+			<li><a href="{% url 'account:user_logout'%}">Logout</a></li>
+			{% else %}
+			<li sytle="margin-right:20px"><a href="{% url 'account:user_login' %}">Login</a></li>
+			<li class=""><a href="{% url 'account:user_register' %}">Sign up</a></li>
+			{% endif %}
+		</ul>
+	</div>
+    </nav>
+</div>
+
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

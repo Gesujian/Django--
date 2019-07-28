@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% block title %}E-my information{% endblock %}
+
+{% block content %}
+<div class="row text-center vetical-middle-sm">
+    <h1>Edit My information</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-horizontal" action="." method="post">{% csrf_token %}
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-4 text-right"><span>Username:</span></div>
+                    <div class="col-md-8 text-left"><span>{{ user.username }}</span></div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-4 text-right"><span>Email:</span></div>
+                    <div class="col-md-8 text-left"><span>{{ user_form.email }}</span></div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-4 text-right"><span>Birth:</span></div>
+                    <div class="col-md-8 text-left"><span>{{ userprofile_form.birth }}</span></div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-4 text-right"><span>Tele:</span></div>
+                    <div class="col-md-8 text-left"><span>{{ userprofile_form.phone }}</span></div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-4 text-right"><span>School:</span></div>
+                    <div class="col-md-8 text-left"><span>{{ userinfo_form.school }}</span></div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-4 text-right"><span>Company:</span></div>
+                    <div class="col-md-8 text-left"><span>{{ userinfo_form.company }}</span></div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-4 text-right"><span>Profession:</span></div>
+                    <div class="col-md-8 text-left"><span>{{ userinfo_form.profession }}</span></div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-4 text-right"><span>Adress:</span></div>
+                    <div class="col-md-8 text-left"><span>{{ userinfo_form.address }}</span></div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-4 text-right"><span>Aboutme:</span></div>
+                    <div class="col-md-8 text-left"><span>{{ userinfo_form.aboutme }}</span></div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Submit">
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+                <div style="margin-right:100px">
+                {% if userinfo.photo %}
+                <img name="user_face" src="{{ userinfo.photo | striptags }}" class="img-circle" width="200px" id="my_photo">
+                {% else %}
+                <img name="user_face" src="{% static '/images/me.jpg' %}" class="img-circle" width="200px" id="my_photo">
+                {% endif %}
+            </div>
+            <div style="margin-right:100px">
+                <button class="btn btn-primary btn-md" id="upload_image" onclick="upload_image_layer()">
+                    upload my photo
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static '/js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/layer.js' %}"></script>
+
+<script>
+function upload_image_layer(){
+    layer.open({
+        title: "upload_img",
+        area:['650px', '600px'],
+        type:2,
+        content:"{% url 'account:my_image' %}",
+    })
+}
+</script> 
+{% endblock %}
