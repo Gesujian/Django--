@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}article titles{% endblock %}
+
+{% block content %}
+<div class="row text-center vertical-middle-sm">
+    <h1>学习一时爽，一直学习一直爽</h1>
+    
+</div>
+<hr>
+<div class="container"> 
+    {% for article in articles %}
+        <div class="list-group">
+            <a href="{{ article.get_url_path }}" class="list-group-item">
+            <h4 class="list-group-item-heading active" >{{ article.title }}</h4>
+            
+            <p class="list-group-item-text">作者：
+                
+                    {{ article.author.username }}
+                
+            </p>
+            
+            <p class="list-group-item-text">日期：{{ article.created }}</p>
+            <p class="list-group-item-text">栏目：{{ article.column }}</p>
+            <p class="list-group-item-text">概要：{{ article.body|slice:'70'|linebreaks }}</p>
+            </a>
+        </div>
+    {% endfor %}
+    {% include "paginator.html" %}
+</div>
+
+
+<script type="text/javascript" src="{% static '/js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/layer.js' %}"></script>
+
+<script type="text/javascript">
+    function delete_article(the, article_id){
+        var article_name = $(the).parents("tr").children("td").eq(1).text();
+        layer.open({
+            type: 1,
+            skin: "layui-layer-rim",
+            area: ["400px", "200px"],
+            title: "删除文章",
+            content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除《'+article_name+'》</p></div>',
+            btn: ['确定','取消'],
+            yes: function(){
+                $.ajax({
+                    url: '{% url "article:delete_article" %}',
+                    type: 'POST',
+                    data: {"article_id": article_id},
+                    success: function(e){
+                        if (e == '1'){
+                            parent.location.reload();
+                            layer.msg("删除成功");
+                        } else {
+                            parent.location.reload();
+                            layer.msg("文章删除失败")
+                        }
+                    },
+                });
+            },
+            btn2: function(index, layero){
+                layer.close(index);
+            },
+        });
+    };
+</script> 
+{% endblock %}
