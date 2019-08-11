@@ -136,12 +136,12 @@ LOGIN_REDIRECT_URL = '/home/'
 
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-EMAIL_HOST = 'smtp-mail.outlook.com'
-EMAIL_HOST_USER = 'gsj1225@outlook.com'
-EMAIL_HOST_PASSWORD ="laopowoaini\\"
+EMAIL_HOST = '服务器'
+EMAIL_HOST_USER = 'you@email.address'
+EMAIL_HOST_PASSWORD ="your_password"
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'gsj1225@outlook.com'
+DEFAULT_FROM_EMAIL = 'you@email.address'
 
 
 REDIS_HOST = "localhost"
